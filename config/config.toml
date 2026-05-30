@@ -1,0 +1,7 @@
+[Network]
+Port = 8888
+IP = "127.0.0.1"
+
+[Device]
+Name = "EFEM_01"
+MaxWaferCount = 25
