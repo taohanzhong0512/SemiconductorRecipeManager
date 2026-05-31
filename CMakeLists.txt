@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.30)
 project(SemiconductorRecipeManager VERSION 1.0.0 LANGUAGES CXX)
-
+if(MSVC)
+    # 源文件和执行字符集都用UTF-8
+    add_compile_options(/utf-8)
+    add_compile_options(/diagnostics:utf8)  # ← 新增这一行
+    # 强制ninja构建时的子进程代码页为UTF-8
+    set(ENV{VSLANG} 1033)  # 强制MSVC用英文输出诊断信息
+endif()
 # 1.设置c++17标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -33,7 +39,16 @@ set(CMAKE_AUTORCC ON)
 include(cmake/FetchSpdlog.cmake)
 include(cmake/FetchTomlPP.cmake)
 
-find_package(Protobuf REQUIRED)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(protobuf_DIR "D:/tool/vcpkg/installed/x64-windows/share/protobuf")
+set(absl_DIR "D:/tool/vcpkg/installed/x64-windows/share/absl")
+set(utf8_range_DIR "D:/tool/vcpkg/installed/x64-windows/share/utf8_range") # 🌟 新增
+
+# 2. 🌟 关键修复：按依赖顺序查找 (utf8_range -> absl -> protobuf)
+find_package(utf8_range CONFIG REQUIRED)  # 🌟 新增
+find_package(absl CONFIG REQUIRED)
+find_package(protobuf CONFIG REQUIRED)
+
 
 add_subdirectory(proto)
 add_subdirectory(src)
