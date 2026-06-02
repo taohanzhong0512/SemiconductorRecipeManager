@@ -1,13 +1,13 @@
 # proto/CMakeLists.txt
 # 🌟 注意：这里不再需要任何 find_package！
 
-# 获取 protoc 可执行文件路径 (Target 已由根目录导入)
-get_target_property(PROTOC_EXE protobuf::protoc IMPORTED_LOCATION_RELEASE)
-if(NOT PROTOC_EXE)
-    get_target_property(PROTOC_EXE protobuf::protoc IMPORTED_LOCATION_DEBUG)
-endif()
-if(NOT PROTOC_EXE)
-    find_program(PROTOC_EXE protoc)
+# 获取 protoc 可执行文件路径
+find_program(PROTOC_EXE protoc HINTS "${Protobuf_PROTOC_EXECUTABLE}")
+if(NOT PROTOC_EXE AND TARGET protobuf::protoc)
+    get_target_property(PROTOC_EXE protobuf::protoc IMPORTED_LOCATION_RELEASE)
+    if(NOT PROTOC_EXE)
+        get_target_property(PROTOC_EXE protobuf::protoc IMPORTED_LOCATION_DEBUG)
+    endif()
 endif()
 if(NOT PROTOC_EXE)
     message(FATAL_ERROR "Could not find protoc executable!")

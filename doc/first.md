@@ -80,6 +80,23 @@ find_package(protobuf CONFIG REQUIRED) # 注意小写和 CONFIG 模式
 
 4.4 运行时 DLL 找不到问题
 由于 vcpkg 默认安装动态库 (x64-windows)，运行前必须在 CLion/VS 的运行配置中，将 D:\tool\vcpkg\installed\x64-windows\bin 追加到环境变量 PATH 中。
+Step 1：搭建地基 (当前步骤)
+编写顶层 CMakeLists.txt。
+配置 cmake/ 脚本，自动拉取并引入 spdlog、toml++ 和 Protobuf。
+写一个最简单的 main.cpp，验证第三方库是否引入成功。
+Step 2：打造基础设施 (Common 层)
+实现 Logger（封装 spdlog，支持控制台彩色输出和文件滚动）。
+实现 ConfigManager（封装 toml++，支持读取 default_config.toml）。
+Step 3：核心业务与数据 (Proto + Core 层)
+编写 recipe.proto 并生成 C++ 代码。
+实现 RecipeManager（加载/保存 Protobuf 数据）。
+实现 RecipeStepModel（让 QML 能显示配方步骤）。
+Step 4：网络通信与协调 (Gateway + Controller 层)
+实现 MesGateway（TCP Server，处理粘包）。
+实现 MainController（将网络请求路由给 Core 层）。
+Step 5：前端界面与整合 (QML + App 层)
+编写 QML 界面，绑定 C++ 数据。
+在 main.cpp 中组装所有模块，跑通全流程。
 
 5. 下一步开发计划 (Step 5 及以后)
    端到端闭环测试：

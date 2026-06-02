@@ -1,6 +1,6 @@
 #include "controller/MainController.h"
 #include "core/RecipeManager.h"
-#include "gateway/ MesGateway.h"
+#include "gateway/MesGateway.h"
 #include "common/Logger.h"
 
 

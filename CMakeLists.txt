@@ -40,15 +40,15 @@ include(cmake/FetchSpdlog.cmake)
 include(cmake/FetchTomlPP.cmake)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-set(protobuf_DIR "D:/tool/vcpkg/installed/x64-windows/share/protobuf")
-set(absl_DIR "D:/tool/vcpkg/installed/x64-windows/share/absl")
-set(utf8_range_DIR "D:/tool/vcpkg/installed/x64-windows/share/utf8_range") # 🌟 新增
+set(protobuf_DIR "E:/tools/vcpkg/installed/x64-windows/share/protobuf")
+set(absl_DIR "E:/tools/vcpkg/installed/x64-windows/share/absl")
+set(utf8_range_DIR "E:/tools/vcpkg/installed/x64-windows/share/utf8_range") # 🌟 新增
 
 # 2. 🌟 关键修复：按依赖顺序查找 (utf8_range -> absl -> protobuf)
 find_package(utf8_range CONFIG REQUIRED)  # 🌟 新增
 find_package(absl CONFIG REQUIRED)
 find_package(protobuf CONFIG REQUIRED)
-
+set(Protobuf_PROTOC_EXECUTABLE "E:/tools/vcpkg/installed/x64-windows/tools/protobuf/protoc.exe")
 
 add_subdirectory(proto)
 add_subdirectory(src)
